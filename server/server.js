@@ -12,7 +12,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get('/api', (req, res) => {
-    console.log('salom');
     res.status(200).json({
         name: "lazizbek"
     })
