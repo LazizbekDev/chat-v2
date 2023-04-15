@@ -1,11 +1,11 @@
-import "./contacts.css"
-import ContactItem from "./contactItem";
+import Contact from "../../components/Contact.jsx";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import { SlClose } from "react-icons/sl";
 import { BiMenuAltLeft } from "react-icons/bi";
+import "./contact.css"
 
-const Contacts = () => {
+const Contactbox = () => {
     const [close, setClose] = useState(false)
     const closeHandler = () => {
         setClose((prevState) => !prevState)
@@ -28,7 +28,7 @@ const Contacts = () => {
                 <div className="divider" />
                 <div className="phone_body">
                     <Link to={`/chat/abulaxad`}>
-                        <ContactItem
+                        <Contact
                             name={"Abul Axad"}
                             msg={"Are you planning to play anything tonight?"}
                             time={"18:21 PM"}
@@ -36,7 +36,7 @@ const Contacts = () => {
                         />
                     </Link>
                     <Link to={`/chat/abulaxad`}>
-                        <ContactItem
+                        <Contact
                             name={"Sadiye"}
                             msg={"Are you planning to play anything tonight?"}
                             time={"22:10 PM"}
@@ -49,4 +49,4 @@ const Contacts = () => {
     );
 };
 
-export default Contacts;
+export default Contactbox;

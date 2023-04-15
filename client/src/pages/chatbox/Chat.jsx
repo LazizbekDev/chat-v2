@@ -1,11 +1,11 @@
 import "./Chat.css"
-import Message from "../../components/message";
-import Contacts from "../../components/contacts/contacts";
+import Message from "../../components/Message.jsx";
+import ContactBox from "../contact/ContactBox.jsx";
 
 const Chat = () => {
     return (
         <div className="--dark-theme" id="chat">
-            <Contacts />
+            <ContactBox />
 
             <div className={'chat-container'}>
                 <div className="chat__conversation-board">

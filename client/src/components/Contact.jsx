@@ -1,6 +1,4 @@
-import React from 'react';
-
-const ContactItem = ({src, name, msg, time, status}) => {
+const Contact = ({src, name, msg, time, status}) => {
     return (
         <div className="chat">
             <img className="chat_avatar" src="https://randomuser.me/api/portraits/men/32.jpg"  alt={"alt"}/>
@@ -18,4 +16,4 @@ const ContactItem = ({src, name, msg, time, status}) => {
     );
 };
 
-export default ContactItem;
+export default Contact;
