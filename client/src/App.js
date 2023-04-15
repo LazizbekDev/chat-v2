@@ -1,6 +1,8 @@
-import Login from "./pages/login/Login";
 import axios from "axios";
 import {useEffect} from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/login/Login";
+import Chat from "./pages/chatbox/Chat";
 
 const App = () => {
   useEffect(() => {
@@ -12,7 +14,12 @@ const App = () => {
     dataFetch()
   }, [])
   return (
-      <Login login={true}/>
+      <BrowserRouter>
+        <Routes>
+          <Route path={'/'} element={<Login login={true}/> }/>
+          <Route path={'/chat'} element={<Chat /> }/>
+        </Routes>
+      </BrowserRouter>
   )
 }
 
