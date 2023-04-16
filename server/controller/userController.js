@@ -1,13 +1,24 @@
 import asyncHandler from "express-async-handler";
 import User from "../model/User.js";
-import { genSalt, hash } from "bcrypt";
+import { genSalt, hash, compare } from "bcrypt";
+import jwt from "jsonwebtoken"
 
 export const signIn = asyncHandler( async (req, res) => {
     const { email, password } = req.body;
-    res.status(200).json({
-        email,
-        password
-    })
+    const user = await User.findOne({email});
+    const matchPassword = await compare(password, user.password);
+
+    if (user && matchPassword) {
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id)
+        })
+    } else {
+        res.status(401);
+        throw new Error("Invalid email or password");
+    }
 });
 
 export const signUp = asyncHandler( async (req, res) => {
@@ -38,7 +49,14 @@ export const signUp = asyncHandler( async (req, res) => {
         res.status(201).json({
             _id: user._id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         })
     }
 });
+
+const generateToken = (id) => {
+    return jwt.sign({id}, process.env.JWT_KEY, {
+        expiresIn: "30d"
+    })
+}
