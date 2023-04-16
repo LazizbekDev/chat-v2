@@ -8,6 +8,19 @@ const initialState = {
     message: ""
 }
 
+export const signUp = createAsyncThunk(
+    'auth/signup',
+    async (user, thinkApi) => {
+        console.log(user)
+    }
+)
+export const signIn = createAsyncThunk(
+    'auth/signin',
+    async (user, thinkApi) => {
+        console.log(user)
+    }
+)
+
 export const authSlice = createSlice({
     name: "auth",
     initialState,
