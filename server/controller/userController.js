@@ -55,6 +55,10 @@ export const signUp = asyncHandler( async (req, res) => {
     }
 });
 
+export const me = (req, res) => {
+    res.status(200).json(req.user)
+}
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_KEY, {
         expiresIn: "30d"
