@@ -1,6 +1,8 @@
 import express from "express";
 import { config } from "dotenv";
 import connect from "./DB/db.js";
+import userRoutes from "./routes/userRoutes.js";
+import {errorHandler} from "./middleware/err.js";
 
 config();
 connect();
@@ -11,11 +13,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.get('/api', (req, res) => {
+app.get('/api/', (req, res) => {
     res.status(200).json({
         name: "lazizbek"
     })
 })
+
+app.use('/api', userRoutes)
+
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log('server running')
