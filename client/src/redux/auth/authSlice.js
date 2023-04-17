@@ -1,8 +1,10 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import auth from "./service.js";
 
+const user = JSON.parse(localStorage.getItem('user'));
+
 const initialState = {
-    user: null,
+    user: user ? user : null,
     isSuccess: false,
     isLoading: false,
     isError: false,
@@ -25,7 +27,8 @@ export const signIn = createAsyncThunk(
     'auth/signin',
     async (user, thinkApi) => {
         try {
-            return await auth.signUp(user)
+            console.log(user)
+            return await auth.signIn(user);
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
 
@@ -57,6 +60,22 @@ export const authSlice = createSlice({
                 state.isError = false
             })
             .addCase(signUp.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isSucces = false;
+                state.user = null;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(signIn.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(signIn.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.user = action.payload;
+                state.isError = false
+            })
+            .addCase(signIn.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isSucces = false;
                 state.user = null;

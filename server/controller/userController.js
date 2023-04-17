@@ -6,9 +6,8 @@ import jwt from "jsonwebtoken"
 export const signIn = asyncHandler( async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({email});
-    const matchPassword = await compare(password, user.password);
 
-    if (user && matchPassword) {
+    if (user && (await compare(password, user.password))) {
         res.status(200).json({
             _id: user._id,
             name: user.name,

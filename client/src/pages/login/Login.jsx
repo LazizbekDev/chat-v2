@@ -1,4 +1,4 @@
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {signIn, signUp, reset} from "../../redux/auth/authSlice.js";
@@ -15,7 +15,7 @@ const Login = ({login}) => {
             toast.error(message)
         }
 
-        if (isSuccess) {
+        if (isSuccess || user) {
             navigate('/chat')
         }
 
@@ -26,7 +26,7 @@ const Login = ({login}) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const name = formData.get('name'),
-            email = formData.get('email').toLocaleLowerCase(),
+            email = formData.get('email')?.toLowerCase(),
             password = formData.get('password');
         if (login) {
             dispatch(signIn({
@@ -44,27 +44,32 @@ const Login = ({login}) => {
             <h2>
                 {login ? <>Sign In</> : <>Sign Up</>}</h2>
             <form id="form" autoComplete="off" onSubmit={onSubmit}>
-                <div className="user-box">
-                    <input type="text" id="name" name="name" required />
-                    <label htmlFor="name">Username</label>
-                </div>
                 {!login && (
                     <div className="user-box">
-                        <input type="text" id="email" name="email" required />
-                        <label htmlFor="email">Email</label>
+                        <input type="text" id="name" name="name" />
+                        <label htmlFor="name">Username</label>
                     </div>
                 )}
+                <div className="user-box">
+                    <input type="text" id="email" name="email" required />
+                    <label htmlFor="email">Email</label>
+                </div>
                 <div className="user-box">
                     <input type="password" name={"password"} id={"password"} required />
                     <label htmlFor={"password"}>Password</label>
                 </div>
-                <button type="submit">
+                <button type="submit" disabled={isLoading}>
                     <span/>
                     <span/>
                     <span/>
                     <span/>
-                    join
+                    {isLoading ? "Wait" : "Join"}
                 </button>
+
+                <Link to={login ? '/sign-up' : '/'} className={'helper-text grad_pb text-gradient'}>
+                    {login ? "Sign-up" : "Sign-in"}
+                </Link>
+
             </form>
         </div>
     );

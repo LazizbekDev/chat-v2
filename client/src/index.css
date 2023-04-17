@@ -30,3 +30,19 @@ a {
   position: absolute;
   left: 0;
 }
+
+.flex {display: flex;}
+.justify-between {justify-content: space-between;}
+.items-center {align-items: center;}
+
+.helper-text {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #a3a3a3;
+}
+
+.text-gradient {
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
