@@ -1,12 +1,12 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {Link, Navigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {signIn, signUp, reset} from "../../redux/auth/authSlice.js";
 import {toast} from "react-toastify";
 import "./Login.css"
 
 const Login = ({login}) => {
-    const navigate = useNavigate();
+    const [navigate, setNavigate] = useState(false);
     const {user, isLoading,isError,isSuccess, message} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ const Login = ({login}) => {
         }
 
         if (isSuccess || user) {
-            navigate('/chat')
+            setNavigate(true)
         }
 
         dispatch(reset())
@@ -41,6 +41,7 @@ const Login = ({login}) => {
 
     return (
         <div className="login-box">
+            {navigate && <Navigate to={'/chat'} replace/> }
             <h2>
                 {login ? <>Sign In</> : <>Sign Up</>}</h2>
             <form id="form" autoComplete="off" onSubmit={onSubmit}>
@@ -66,7 +67,7 @@ const Login = ({login}) => {
                     {isLoading ? "Wait" : "Join"}
                 </button>
 
-                <Link to={login ? '/sign-up' : '/'} className={'helper-text grad_pb text-gradient'}>
+                <Link to={login ? '/sign-up' : '/'} replace={true} className={'helper-text grad_pb text-gradient'}>
                     {login ? "Sign-up" : "Sign-in"}
                 </Link>
 

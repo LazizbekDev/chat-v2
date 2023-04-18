@@ -31,6 +31,15 @@ a {
   left: 0;
 }
 
+.open-handle {
+  padding: 3px;
+}
+
+.open-handle svg {
+  fill: #fff;
+  mix-blend-mode: difference;
+}
+
 .flex {display: flex;}
 .justify-between {justify-content: space-between;}
 .items-center {align-items: center;}

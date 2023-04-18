@@ -15,9 +15,12 @@ const signIn = async (userData) => {
     return res.data
 }
 
+const logOut = () => localStorage.removeItem('user');
+
 const auth = {
     signUp,
-    signIn
+    signIn,
+    logOut
 }
 
 export default auth

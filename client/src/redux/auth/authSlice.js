@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import auth from "./service.js";
+import service from "./service.js";
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -27,13 +28,19 @@ export const signIn = createAsyncThunk(
     'auth/signin',
     async (user, thinkApi) => {
         try {
-            console.log(user)
             return await auth.signIn(user);
         } catch (err) {
             const message = (err.response && err.response.data && err.response.data.message) || err.message || err.toString();
 
             return thinkApi.rejectWithValue(message);
         }
+    }
+)
+
+export const logOut = createAsyncThunk(
+    'auth/logOut',
+    async () => {
+        await service.logOut()
     }
 )
 
@@ -81,6 +88,9 @@ export const authSlice = createSlice({
                 state.user = null;
                 state.isError = true;
                 state.message = action.payload;
+            })
+            .addCase(logOut.fulfilled, (state) => {
+                state.user = null
             })
     }
 })
