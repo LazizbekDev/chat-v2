@@ -1,13 +1,20 @@
 import "./Chat.css"
 import Message from "../../components/Message.jsx";
 import ContactBox from "../contact/ContactBox.jsx";
+import {useState} from "react";
 
 const Chat = () => {
+    const [close, setClose] = useState(false);
+
+    const closeHandler = () => {
+        setClose((prevState) => !prevState)
+    }
+
     return (
         <div className="--dark-theme" id="chat">
-            <ContactBox />
+            <ContactBox close={close} onClick={closeHandler} />
 
-            <div className={'chat-container'}>
+            <div className={`chat-container ${!close && "chat-container-closed"}`}>
                 <div className="chat__conversation-board">
                     <Message
                         name={"AbulAxad"}

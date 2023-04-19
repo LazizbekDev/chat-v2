@@ -14,11 +14,16 @@
 }
 
 .phone {
-    height: 600px;
+    height: 100%;
     width: 300px;
     overflow: hidden;
     position: relative;
     transition: .2s;
+}
+
+.contact_block {
+    position: absolute;
+    top: 0;
 }
 
 .phone-closed {
@@ -29,7 +34,7 @@
     transition: .2s;
 }
 
-.phone-closed > * {
+.contact-closed > * {
     display: none;
 }
 
@@ -142,4 +147,13 @@ img.chat_avatar {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .phoneWrapper, .phone {
+        width: 100%;
+    }
+    .phoneWrapperMenu {
+        width: 30px;
+    }
 }
