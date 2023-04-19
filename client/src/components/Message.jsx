@@ -1,10 +1,13 @@
+import {useSelector} from "react-redux";
+
 const Message = ({name, owner = false, msg}) => {
+    const { user } = useSelector((state) => state.auth);
     return (
         <div className={`chat__conversation-board__message-container ${owner && "reversed"}`}>
             <div className="chat__conversation-board__message__person">
                 <div className="chat__conversation-board__message__person__avatar">
                     <img
-                        src="https://randomuser.me/api/portraits/women/44.jpg"
+                        src={user.avatar}
                         alt="Monika Figi"
                     />
                 </div>

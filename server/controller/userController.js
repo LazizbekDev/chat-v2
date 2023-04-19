@@ -12,6 +12,7 @@ export const signIn = asyncHandler( async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            avatar: user.avatar,
             token: generateToken(user._id)
         })
     } else {
@@ -41,7 +42,8 @@ export const signUp = asyncHandler( async (req, res) => {
     const user = await User.create({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        avatar: `https://robohash.org/${email}`
     })
 
     if (user) {
@@ -49,6 +51,7 @@ export const signUp = asyncHandler( async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
+            avatar: user.avatar,
             token: generateToken(user._id)
         })
     }

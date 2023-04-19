@@ -13,6 +13,9 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, "Please set your password"],
+    },
+    avatar: {
+        type: String
     }
 }, {timestamps: true});
 
