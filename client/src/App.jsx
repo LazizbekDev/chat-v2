@@ -11,6 +11,7 @@ const App = () => {
                 <Route path={'/'} element={<Login login={true}/> }/>
                 <Route path={'/sign-up'} element={<Login login={false}/> }/>
                 <Route path={'/chat'} element={<Chat /> }/>
+                <Route path={'/chat/:id'} element={<Chat single={true} /> }/>
             </Routes>
             <ToastContainer />
         </BrowserRouter>

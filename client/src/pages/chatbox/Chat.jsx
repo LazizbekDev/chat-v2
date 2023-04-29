@@ -1,18 +1,26 @@
-import "./Chat.css"
+import {useState} from "react";
+import { useParams } from "react-router-dom";
 import Message from "../../components/Message.jsx";
 import ContactBox from "../contact/ContactBox.jsx";
-import {useState} from "react";
+import "./Chat.css"
 
-const Chat = () => {
+
+const Chat = ({single}) => {
     const [close, setClose] = useState(false);
 
     const closeHandler = () => {
         setClose((prevState) => !prevState)
     }
 
+    const { id } = useParams();
+
+    console.log(id)
+
     return (
         <div className="--dark-theme" id="chat">
-            <ContactBox close={close} onClick={closeHandler} />
+            {!single && (
+                <ContactBox close={close} onClick={closeHandler} />
+            )}
 
             <div className={`chat-container ${!close && "chat-container-closed"}`}>
                 <div className="chat__conversation-board">
