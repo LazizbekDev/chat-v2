@@ -1,16 +1,22 @@
 import Contact from "../../components/Contact.jsx";
 import {Link, Navigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { SlClose } from "react-icons/sl";
 import {BiLogOutCircle, BiMenuAltLeft} from "react-icons/bi";
 import "./contact.css"
 import {useDispatch, useSelector} from "react-redux";
 import {logOut, reset} from "../../redux/auth/authSlice.js";
+import {getAllUsers} from "../../redux/users/users.js";
 
 const ContactBox = ({close, onClick}) => {
     const { user } = useSelector((state) => state.auth);
+    const { users, isLoading } = useSelector((state) => state.users);
     const dispatch = useDispatch();
     const [navigate, setNavigate] = useState(false);
+
+    useEffect(() => {
+        dispatch(getAllUsers());
+    }, [dispatch])
 
     const logout = () => {
         dispatch(logOut());
@@ -37,21 +43,17 @@ const ContactBox = ({close, onClick}) => {
                     </div>
                     <div className="divider" />
                     <div className="phone_body">
-                        <Link to={`/chat/abulaxad`}>
-                            <Contact
-                                name={"Abul Axad"}
-                                msg={"Are you planning to play anything tonight?"}
-                                time={"18:21 PM"}
-                                status={"new"}
-                            />
-                        </Link>
-                        <Link to={`/chat/abulaxad`}>
-                            <Contact
-                                name={"Sadiye"}
-                                msg={"Are you planning to play anything tonight?"}
-                                time={"22:10 PM"}
-                            />
-                        </Link>
+                        {isLoading ? "Loading..." : users.map((item) => (
+                            <Link to={`/chat/${item._id}`} key={item._id}>
+                                <Contact
+                                    name={item.name}
+                                    src={item.avatar}
+                                    msg={"Are you planning to play anything tonight?"}
+                                    time={"18:21 PM"}
+                                    status={"new"}
+                                />
+                            </Link>
+                        ))}
                     </div>
                 </div>
 

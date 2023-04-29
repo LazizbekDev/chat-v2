@@ -61,6 +61,16 @@ export const me = (req, res) => {
     res.status(200).json(req.user)
 }
 
+export const getAllUsers = asyncHandler( async (req, res) => {
+    try {
+        const users = await User.find();
+
+        res?.json(users)
+    } catch (err) {
+        throw new Error("Failed to catch users")
+    }
+})
+
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_KEY, {
         expiresIn: "30d"

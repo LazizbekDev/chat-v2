@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import connect from "./DB/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import {errorHandler} from "./middleware/err.js";
+import messages from "./routes/messages.js";
 
 config();
 connect();
@@ -20,6 +21,7 @@ app.get('/api/', (req, res) => {
 })
 
 app.use('/api', userRoutes)
+app.use('/api', messages)
 
 app.use(errorHandler)
 
