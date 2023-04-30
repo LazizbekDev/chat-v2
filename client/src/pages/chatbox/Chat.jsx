@@ -1,24 +1,37 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import Message from "../../components/Message.jsx";
 import ContactBox from "../contact/ContactBox.jsx";
 import "./Chat.css"
-import {sendMessage} from "../../redux/conversation/message.js";
+import {getMessage, reset, sendMessage} from "../../redux/conversation/message.js";
 import {useDispatch, useSelector} from "react-redux";
 
 
 const Chat = ({single}) => {
     const [close, setClose] = useState(false);
     const { user } = useSelector((state) => state.auth);
+    const { messages, isError, isSuccess } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
-    const closeHandler = () => {
-        setClose((prevState) => !prevState)
-    }
-
+    const closeHandler = () => setClose((prevState) => !prevState)
     const { id } = useParams();
 
-    console.log(!id)
+    useEffect(() => {
+        const messageData = {
+            from: user._id,
+            to: id ? id : "643fbf3364c5ac8bfa388a2f",
+        }
+
+        if (isSuccess) {
+            dispatch(reset())
+        }
+
+
+    }, [id])
+    dispatch(getMessage({
+        from: user._id,
+        to: id ? id : "643fbf3364c5ac8bfa388a2f",
+    }));
 
     const submitHandler = (e) => {
         e.preventDefault();

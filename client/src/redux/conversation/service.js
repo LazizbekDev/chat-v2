@@ -1,12 +1,18 @@
 import axios from "axios";
 
-const sendMessage = async (data) => {
+const send = async (data) => {
     const res = await axios.post('/api/message', data);
     return res.data
 }
 
+const get = async (messageData) => {
+    const res = await axios.post('/api/messages', messageData);
+    return res.data
+}
+
 const message = {
-    sendMessage
+    send,
+    get
 }
 
 export default message;

@@ -12,7 +12,7 @@ export const sendMessage = asyncHandler( async (req, res) => {
         })
 
         if (data) {
-            res?.status(201).json({
+            return res?.status(201).json({
                 message: "Message successfully sent"
             })
         }
@@ -20,12 +20,13 @@ export const sendMessage = asyncHandler( async (req, res) => {
             message: "Failed to send message"
         })
     } catch (err) {
+        res.status(400);
         throw new Error("Something went to wrong!")
     }
 });
 
 export const getMessage = asyncHandler( async (req, res) => {
-    const {from, to} = req.body;
+    const {from, to} = req?.body;
 
     try {
         const messages = await Message.find({

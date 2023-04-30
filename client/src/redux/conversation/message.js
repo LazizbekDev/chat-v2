@@ -5,15 +5,15 @@ const initialState = {
     messages: [],
     isLoading: false,
     isSuccess: false,
-    isError: false
+    isError: false,
+    errorMsg: ""
 }
 
 export const sendMessage = createAsyncThunk(
     'message/send',
     async (messageData, thunkApi) => {
         try {
-            await message.sendMessage(messageData);
-            console.log(messageData)
+            return await message.send(messageData);
         } catch (err) {
             const errorMessage = err?.response?.data?.err ? err.response.data.err : "Failed to send message";
             thunkApi.rejectWithValue(errorMessage);
@@ -21,27 +21,55 @@ export const sendMessage = createAsyncThunk(
     }
 )
 
+export const getMessage = createAsyncThunk(
+    'message/get',
+    async (data, thunkAPI) => {
+        try {
+            return await message.get(data);
+        } catch (err) {
+            const errorMessage = err?.response?.data?.err ? err.response.data.err : "Failed to get messages";
+            thunkAPI.rejectWithValue(errorMessage);
+        }
+    }
+)
+
 export const messageSlice = createSlice({
     name: "messages",
     initialState,
+    reducers: {
+        reset: (state) => initialState
+    },
     extraReducers: (builder) => {
         builder
             .addCase(sendMessage.pending, (state) => {
                 state.isLoading = true
             })
             .addCase(sendMessage.fulfilled, (state, action) => {
+                state.messages = action.payload;
+                state.isLoading = false;
+                state.isSuccess = true
+            })
+            .addCase(sendMessage.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.errorMsg = action.payload;
+            })
+            .addCase(getMessage.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getMessage.fulfilled, (state, action) => {
+                state.messages = action.payload;
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.messages = action.payload;
-                state.isError = false
+                console.log(action)
             })
-            .addCase(sendMessage.rejected, (state) => {
+            .addCase(getMessage.rejected, (state, action) => {
                 state.isLoading = false;
-                state.isSucces = false;
-                state.messages = null;
                 state.isError = true;
+                state.errorMsg = action.payload;
             })
     }
 });
 
-export default messageSlice.reducer
+export const {reset} = messageSlice.actions;
+export default messageSlice.reducer;
