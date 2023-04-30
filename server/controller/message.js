@@ -25,7 +25,24 @@ export const sendMessage = asyncHandler( async (req, res) => {
 });
 
 export const getMessage = asyncHandler( async (req, res) => {
-    res?.status(200).json({
-        status: "COOL"
-    })
+    const {from, to} = req.body;
+
+    try {
+        const messages = await Message.find({
+            users: {
+                $all: [from, to]
+            }
+        }).sort({updatedAt: 1});
+
+        const projectMessages = messages.map(message=> {
+            return {
+                fromMe: message.sender.toString() === from,
+                message: message.message.text
+            }
+        })
+
+        res?.status(200).json(projectMessages);
+    } catch (err) {
+        throw new Error("Failed to fetch messages")
+    }
 });
