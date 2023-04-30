@@ -18,7 +18,7 @@ const Chat = ({single}) => {
 
     const { id } = useParams();
 
-    console.log(id)
+    console.log(!id)
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -26,7 +26,7 @@ const Chat = ({single}) => {
         const message = formData.get("message")
         const data = {
             from: user._id,
-            to: id,
+            to: id ? id : "643fbf3364c5ac8bfa388a2f",
             message
         }
         dispatch(sendMessage(data))
