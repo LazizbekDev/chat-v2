@@ -3,7 +3,7 @@ import Message from "../model/Message.js";
 
 export const sendMessage = asyncHandler( async (req, res) => {
     try {
-        const {from, to, message} = req?.body;
+        const {from, to, message} = req.body;
 
         const data = await Message.create({
             message: {text: message},

@@ -3,10 +3,14 @@ import { useParams } from "react-router-dom";
 import Message from "../../components/Message.jsx";
 import ContactBox from "../contact/ContactBox.jsx";
 import "./Chat.css"
+import {sendMessage} from "../../redux/conversation/message.js";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const Chat = ({single}) => {
     const [close, setClose] = useState(false);
+    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
     const closeHandler = () => {
         setClose((prevState) => !prevState)
@@ -15,6 +19,18 @@ const Chat = ({single}) => {
     const { id } = useParams();
 
     console.log(id)
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const message = formData.get("message")
+        const data = {
+            from: user._id,
+            to: id,
+            message
+        }
+        dispatch(sendMessage(data))
+    }
 
     return (
         <div className="--dark-theme" id="chat">
@@ -35,7 +51,7 @@ const Chat = ({single}) => {
                     />
                 </div>
                 <div className="chat__conversation-panel">
-                    <div className="chat__conversation-panel__container">
+                    <form className="chat__conversation-panel__container" onSubmit={submitHandler}>
                         <button className="chat__conversation-panel__button panel-item btn-icon add-file-button">
                             <svg className="feather feather-plus sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg"
                                  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -57,8 +73,9 @@ const Chat = ({single}) => {
                         <input
                             className="chat__conversation-panel__input panel-item"
                             placeholder="Type a message..."
+                            name={"message"}
                         />
-                        <button className="chat__conversation-panel__button panel-item btn-icon send-message-button">
+                        <button type={"submit"} className="chat__conversation-panel__button panel-item btn-icon send-message-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                                  aria-hidden="true" data-reactid="1036">
@@ -66,7 +83,7 @@ const Chat = ({single}) => {
                                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                             </svg>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
