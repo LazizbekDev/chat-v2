@@ -1,13 +1,15 @@
 import {useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
 
-const Message = ({name, owner = false, msg}) => {
+const Message = ({name, fromMe = false, msg, avatar}) => {
     const { user } = useSelector((state) => state.auth);
+
     return (
-        <div className={`chat__conversation-board__message-container ${owner && "reversed"}`}>
+        <div className={`chat__conversation-board__message-container ${fromMe && "reversed"}`}>
             <div className="chat__conversation-board__message__person">
                 <div className="chat__conversation-board__message__person__avatar">
                     <img
-                        src={user.avatar}
+                        src={fromMe ? user.avatar : avatar}
                         alt="Monika Figi"
                     />
                 </div>

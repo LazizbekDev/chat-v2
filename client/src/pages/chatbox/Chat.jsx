@@ -2,36 +2,35 @@ import {useEffect, useState} from "react";
 import { useParams } from "react-router-dom";
 import Message from "../../components/Message.jsx";
 import ContactBox from "../contact/ContactBox.jsx";
-import "./Chat.css"
 import {getMessage, reset, sendMessage} from "../../redux/conversation/message.js";
 import {useDispatch, useSelector} from "react-redux";
+import "./Chat.css"
 
 
 const Chat = ({single}) => {
     const [close, setClose] = useState(false);
+    const [avatar, setAvatar] = useState('');
     const { user } = useSelector((state) => state.auth);
-    const { messages, isError, isSuccess } = useSelector((state) => state.auth);
+    const { messages, isLoading, isSuccess } = useSelector((state) => state.messages);
     const dispatch = useDispatch();
 
     const closeHandler = () => setClose((prevState) => !prevState)
     const { id } = useParams();
+    const { users, isLoading: loadImg } = useSelector((state) => state.users);
 
     useEffect(() => {
-        const messageData = {
+        dispatch(getMessage({
             from: user._id,
             to: id ? id : "643fbf3364c5ac8bfa388a2f",
-        }
-
+        }));
         if (isSuccess) {
             dispatch(reset())
         }
-
-
+        const selectedUser = users.find(i => i._id === id);
+        setAvatar(selectedUser?.avatar);
     }, [id])
-    dispatch(getMessage({
-        from: user._id,
-        to: id ? id : "643fbf3364c5ac8bfa388a2f",
-    }));
+
+    console.log(avatar)
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -53,15 +52,15 @@ const Chat = ({single}) => {
 
             <div className={`chat-container ${!close && "chat-container-closed"}`}>
                 <div className="chat__conversation-board">
-                    <Message
-                        name={"AbulAxad"}
-                        msg={"Somewhere stored deep, deep in my memory banks is the phrase &quot;It really whips the llama's ass&quot;."}
-                    />
-                    <Message
-                        name={"Lazizbek"}
-                        msg={"Yeah"}
-                        owner={true}
-                    />
+                    {isLoading ? "laoding" : messages?.map((msg, i) => (
+                        <Message
+                            name={"AbulAxad"}
+                            msg={msg.message}
+                            fromMe={msg.fromMe}
+                            avatar={avatar}
+                            key={i}
+                        />
+                    ))}
                 </div>
                 <div className="chat__conversation-panel">
                     <form className="chat__conversation-panel__container" onSubmit={submitHandler}>

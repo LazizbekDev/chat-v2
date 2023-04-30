@@ -52,6 +52,7 @@
 
 .chat-container {
     position: relative;
+    width: 100%;
 }
 
 #chat .chat__conversation-board {
@@ -189,6 +190,7 @@
     flex-direction: row;
     align-items: center;
     height: 100%;
+    width: 100%;
 }
 #chat .chat__conversation-panel__container .panel-item:not(:last-child) {
     margin: 0 1em 0 0;
