@@ -44,8 +44,7 @@ export const messageSlice = createSlice({
             .addCase(sendMessage.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(sendMessage.fulfilled, (state, action) => {
-                state.messages = action.payload;
+            .addCase(sendMessage.fulfilled, (state) => {
                 state.isLoading = false;
                 state.isSuccess = true
             })
@@ -55,13 +54,12 @@ export const messageSlice = createSlice({
                 state.errorMsg = action.payload;
             })
             .addCase(getMessage.pending, (state) => {
-                state.isLoading = true
+                state.isLoading = true;
             })
             .addCase(getMessage.fulfilled, (state, action) => {
                 state.messages = action.payload;
                 state.isLoading = false;
                 state.isSuccess = true;
-                console.log(action)
             })
             .addCase(getMessage.rejected, (state, action) => {
                 state.isLoading = false;

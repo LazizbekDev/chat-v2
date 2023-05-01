@@ -5,6 +5,7 @@ import ContactBox from "../contact/ContactBox.jsx";
 import {getMessage, reset, sendMessage} from "../../redux/conversation/message.js";
 import {useDispatch, useSelector} from "react-redux";
 import "./Chat.css"
+import Loader from "../../components/loader.jsx";
 
 
 const Chat = ({single}) => {
@@ -16,7 +17,7 @@ const Chat = ({single}) => {
 
     const closeHandler = () => setClose((prevState) => !prevState)
     const { id } = useParams();
-    const { users, isLoading: loadImg } = useSelector((state) => state.users);
+    const { users } = useSelector((state) => state.users);
 
     useEffect(() => {
         dispatch(getMessage({
@@ -29,8 +30,6 @@ const Chat = ({single}) => {
         const selectedUser = users.find(i => i._id === id);
         setAvatar(selectedUser?.avatar);
     }, [id])
-
-    console.log(avatar)
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -52,7 +51,7 @@ const Chat = ({single}) => {
 
             <div className={`chat-container ${!close && "chat-container-closed"}`}>
                 <div className="chat__conversation-board">
-                    {isLoading ? "laoding" : messages?.map((msg, i) => (
+                    {isLoading ? <Loader /> : messages.map((msg, i) => (
                         <Message
                             name={"AbulAxad"}
                             msg={msg.message}
@@ -63,7 +62,10 @@ const Chat = ({single}) => {
                     ))}
                 </div>
                 <div className="chat__conversation-panel">
-                    <form className="chat__conversation-panel__container" onSubmit={submitHandler}>
+                    <form
+                        autoComplete={'off'}
+                        className="chat__conversation-panel__container"
+                        onSubmit={submitHandler}>
                         <button className="chat__conversation-panel__button panel-item btn-icon add-file-button">
                             <svg className="feather feather-plus sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg"
                                  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"

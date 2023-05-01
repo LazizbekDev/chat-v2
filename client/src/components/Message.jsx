@@ -1,5 +1,4 @@
 import {useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
 
 const Message = ({name, fromMe = false, msg, avatar}) => {
     const { user } = useSelector((state) => state.auth);

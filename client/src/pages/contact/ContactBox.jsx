@@ -7,12 +7,15 @@ import "./contact.css"
 import {useDispatch, useSelector} from "react-redux";
 import {logOut, reset} from "../../redux/auth/authSlice.js";
 import {getAllUsers} from "../../redux/users/users.js";
+import Loader from "../../components/loader.jsx";
 
 const ContactBox = ({close, onClick}) => {
     const { user } = useSelector((state) => state.auth);
     const { users, isLoading } = useSelector((state) => state.users);
     const dispatch = useDispatch();
     const [navigate, setNavigate] = useState(false);
+
+    const filteredUsers = users.filter(i => i._id !== user._id);
 
     useEffect(() => {
         dispatch(getAllUsers());
@@ -43,7 +46,7 @@ const ContactBox = ({close, onClick}) => {
                     </div>
                     <div className="divider" />
                     <div className="phone_body">
-                        {isLoading ? "Loading..." : users.map((item) => (
+                        {isLoading ? <Loader /> : filteredUsers.map((item) => (
                             <Link to={`/chat/${item._id}`} key={item._id}>
                                 <Contact
                                     name={item.name}
